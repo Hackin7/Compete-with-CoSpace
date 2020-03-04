@@ -48,7 +48,7 @@ int main() {
     for(int n=0;n<v;n++){
         cout<<c.conX(n)<<" "<<c.conY(n)<<"\n";
     }*/
-    z.zones();z.coutZones();cout<<"0 0\n";
+    //z.zones();z.coutZones();cout<<"0 0\n";
     int count = 0;
     FindNode* reached = new CheckReached(x2,y2);
     vector<coordinates> stuff = mapper.getPath(x1, y1, reached);

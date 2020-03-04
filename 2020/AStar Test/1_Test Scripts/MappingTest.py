@@ -87,12 +87,17 @@ if __name__ == "__main__":
         stack.append(y)
         newim = imageObj(im)
         if stack[0]!=0 or stack[1] !=0 :
-            newim.show()
+            #newim.show()
             newimg = ImageTk.PhotoImage(newim)
-            canvas.itemconfig(canvasImage, image=newimg)
+            canvas.itemconfig(canvasImage, image=newimg,anchor="nw")
+            #Some random code to enable it to actually display the image
+            canvasImage.image = img
         #outputting x and y coords to console
         print(x,y)   	
 
+    def resetImg():
+        canvas.itemconfig(canvasImage, image=img,anchor="nw")
+        
     #mouseclick event
     canvas.bind("<Button 1>",printcoords)
 
@@ -101,13 +106,13 @@ if __name__ == "__main__":
     def Exit(*args):
         pass
     #Create Entry Widget
-    query = Entry(root)
-    query.pack()
+    #query = Entry(root)
+    #query.pack()
     #Focus the Entry Widget
-    query.focus_set()
-    query.focus_force()
+    #query.focus_set()
+    #query.focus_force()
     #Create buttons
-    remove_button = Button(root,text='Reload',command=(imageObj(im)).show )
+    remove_button = Button(root,text='Reset',command= resetImg)
     remove_button.pack(side='bottom')
     #exit_button = Button(root,text='Exit',command=Exit)
     #exit_button.pack(side='right')

@@ -32,7 +32,7 @@ Timer SuperCloseTimer;
 int SuperObjX;//[20];
 int SuperObjY;//[20];
 int SuperTimeOut = 40;
-int SuperCloseTimeOut = 2;
+int SuperCloseTimeOut = 5;
 OneTime nearingSuper;
 coordinates superAwayPoint;
 void getAwayPoint(){
