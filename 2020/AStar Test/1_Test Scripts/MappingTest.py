@@ -105,12 +105,6 @@ if __name__ == "__main__":
     #Quit when done
     def Exit(*args):
         pass
-    #Create Entry Widget
-    #query = Entry(root)
-    #query.pack()
-    #Focus the Entry Widget
-    #query.focus_set()
-    #query.focus_force()
     #Create buttons
     remove_button = Button(root,text='Reset',command= resetImg)
     remove_button.pack(side='bottom')
