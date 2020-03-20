@@ -97,7 +97,45 @@ if __name__ == "__main__":
 
     def resetImg():
         canvas.itemconfig(canvasImage, image=img,anchor="nw")
-        
+
+    def liveSituation(mapname="map.txt",size=361,pathname="path.txt", zonename="zone.txt"):
+        print(mapname,pathname)
+        layout=[]
+        with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+mapname) as m:
+            for j in range(360):
+                data = m.readline()
+                #print(data)
+                if data=="":break
+                data = [int(i) for i in data.split()]
+                layout = [data]+layout
+
+        with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+zonename) as m:
+            for j in range(360):
+                data = m.readline()
+                #print(data)
+                if data=="":break
+                zoning = data.split()
+                for i in range(len(zoning)):
+                    if int(zoning[i]) > 0:
+                        layout[-j][i] = 5
+
+        print(f"Getting Map {len(layout)}")
+        lines = []        
+        with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+pathname) as p:
+            while True:
+                data = p.readline()
+                if data == "":break
+                lines.append(data)
+        coordinates = inputToCoordinates(lines)
+        newMap = switchYValues(mapData(im.size, pixels))
+        newImg, newPixels = convertBack(layout)
+        addCoordinates(coordinates, newPixels,(100,100,0))
+        #Actually Showing the Image
+        newimg = ImageTk.PhotoImage(newImg)
+        canvas.itemconfig(canvasImage, image=newimg,anchor="nw")
+        #Some random code to enable it to actually display the image
+        canvasImage.image = img
+
     #mouseclick event
     canvas.bind("<Button 1>",printcoords)
 
@@ -106,7 +144,9 @@ if __name__ == "__main__":
     def Exit(*args):
         pass
     #Create buttons
-    remove_button = Button(root,text='Reset',command= resetImg)
+    remove_button = Button(root,text='Original',command= resetImg)
+    remove_button.pack(side='bottom')
+    remove_button = Button(root,text='Live Situation',command=liveSituation)
     remove_button.pack(side='bottom')
     #exit_button = Button(root,text='Exit',command=Exit)
     #exit_button.pack(side='right')

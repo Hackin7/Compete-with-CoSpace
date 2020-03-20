@@ -1,5 +1,6 @@
 class Map{
 	public:
+    deque<tuple<int,int,int,int> > tempBarriers;
 	//Colour Values
 	const int unexplored = -1;
 	const int predictedEmpty = -2;
@@ -76,7 +77,15 @@ class Map{
 				val == redBlack ||
 				val == redBlueBlack;
 	}
-	int getPixel(int i, int j){return map[i][j];}
+	int getPixel(int i, int j){
+	    for (auto bound : tempBarriers){
+            if (get<0>(bound) <= i && i <= get<2>(bound) &&
+                get<1>(bound) <= j && j <= get<3>(bound)){
+                    return wall;
+            }
+	    }
+	    return map[i][j];
+    }
 	bool isVal(int i, int j, int val){return map[i][j] == val;}
 	bool isWalkableVal(int val){
 		return  val == unexplored ||
@@ -95,17 +104,17 @@ class Map{
 				return 1;
 			}
 		if (val == wall){
-			return v;
+			return v*2;
 		}
 		if (val == slow){
 				return 50;
 		}
 		if (val == trap){
-			if (toAvoidTrap){return v;}
+			if (toAvoidTrap){return v*2;}
 			else{return 10;}
 		}
 		if (val == border){
-			return v/3;//40;
+			return v/2;//40;
 		}
 		return 1;
 	}
@@ -168,7 +177,14 @@ int findValPriority(int val){
 	  if (y2 > 270){y2=270;}
 	  rectfill(x1,x2,y1,y2,val);
 	}
-
+    void addTempZone(int x1, int y1, int x2, int y2){
+        tempBarriers.push_back(make_tuple(x1,y1,x2,y2));
+    }
+    void removeTempZone(){
+        if (tempBarriers.size()>0){
+            tempBarriers.pop_front();
+        }
+    }
 };
 
 //Map location;

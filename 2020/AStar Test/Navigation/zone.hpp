@@ -118,10 +118,12 @@ public:
         if (runValCount[colour[no]] >= valCount[colour[no]]){
                 //Reset
                 cout<<"RESET Colour Zone";
+                /*
                 runValCount[colour[no]]=0;
                 for (int i=1;i<zoneNumber+1;i++){
                     if(colour[i] == colour[no]){visited[no]=0;}
-                }
+                }*/
+                memset(visited,0,sizeof(visited));
         }
         return visited[no];
     }
@@ -156,8 +158,14 @@ public:
             ///Map
             for (int i=currlocation->Width-1;i>=0;i--){
                 for (int j=0;j<currlocation->Height;j++){
-                    zoneFile<<zoneNos[conv(i,j)];
+                    //Coordinates
+                    /*
+                    if (zoneNos[conv(i,j)]){
+                        cout<<i<<" "<<j<<"\n";
+                    }*/
                     if(j!=0)zoneFile<<" ";
+                    //zoneFile<<visited[conv(i,j)];
+                    zoneFile<<visited[zoneNos[conv(i,j)]];
                 }zoneFile<<endl;
             }
             //outfile<<data;

@@ -50,7 +50,7 @@ bool reachable(Map *currlocation, int x1, int y1, int x2, int y2){
 coordinates nodeSelect(Map *currlocation,vector<coordinates> path, int threshold){
 	//Choose node in direct sight
 	int pathSize = path.size();
-	int j=1;for (;j<threshold && j<pathSize;j++){
+	int j=1;for (;j<threshold+5 && j<pathSize;j++){
         if (!reachable(currlocation,PositionX1,PositionY1,path[j].pos[0],path[j].pos[1])){
             j--;break;
         }

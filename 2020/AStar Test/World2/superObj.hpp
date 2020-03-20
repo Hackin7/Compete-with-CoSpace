@@ -1,21 +1,5 @@
-Map location(layout);
-AStar mapping(&location);
 ZoneNodes z(&location);
 Cycle cycle(&location,&z,&mapping);
-///Move to coordinates////////////////////////////////////////////
-class CheckReached:public FindNode{
-    private: int x1, y1;
-public:
-     CheckReached(int x, int y) {x1 = x; y1 = y;};
-     virtual bool operator() (int x, int y){return (x == x1 && y == y1);};
-};
-void moveAStar(int x, int y){
-    if(reached(x,y,10,10)){WheelLeft=0;WheelRight=0;return;}
-	FindNode* go = new CheckReached(x,y);
-	mapping.getPath(PositionX,PositionY,go);
-	moveTo(&location,mapping.path,10);
-}
-
 ///Super Object Collection//////////////////////////////////////////////////////////////////////////////////////////////////////////
 class FindFurthestPoint:public FindNode{
 		private: int dist = 4;int xpos=0,ypos = 0;
@@ -38,7 +22,7 @@ coordinates superAwayPoint;
 void getAwayPoint(){
 	FindNode* go = new FindFurthestPoint(SuperObjX,SuperObjY, 20);
 		mapping.getPath(colorSensorX,colorSensorY,go);
-		superAwayPoint = nodeSelect(&location,mapping.path,10);
+		superAwayPoint = nodeSelect(&location,mapping.path,1);
 		cout<<"["<<superAwayPoint.pos[0]<<","<<superAwayPoint.pos[1]<<"]";
 }
 bool superObjAStar(){
@@ -78,7 +62,7 @@ bool superObjAStar(){
 		cout<<"SUPER!!!"<<endl;
         FindNode* go = new CheckReached(SuperObjX,SuperObjY);
 		mapping.getPath(colorSensorX,colorSensorY,go);
-		coordinates node = nodeSelect(&location,mapping.path,10);
+		coordinates node = nodeSelect(&location,mapping.path,1);
 		rotateToSuper(node.pos[0], node.pos[1]);
 		SuperCloseTimer.reset();
 		nearingSuper.reset();

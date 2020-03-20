@@ -26,25 +26,25 @@ colourData = [(-1,(0,100,0)),\
               (5, (0,0,0)),\
               (6, (100,0,0)),\
               (9,(0,0,100))]
+
+border = 6
+borderColour = (100,0,0)
+wall = 5
+wallColour = (0,0,0)
 def addBorder(size,pixels,data,x,y, colorval, borderval, margin):
     #generate Margin around area to prevent collision with walls and stuff
     for m in range(1,margin):
         for n in range(1, margin):
             if x+m < size[0]:
                 if y+n < size[1]:
-                    if pixels[x+m,y+n] != colorval:  data[x+m][y+n] = borderval
+                    if pixels[x+m,y+n] != colorval and  data[x+m][y+n]!=wall:  data[x+m][y+n] = borderval
                 if y-n > 0:
-                    if pixels[x+m,y-n] != colorval:  data[x+m][y-n] = borderval
+                    if pixels[x+m,y-n] != colorval and data[x+m][y-n]!=wall:  data[x+m][y-n] = borderval
             if x+m > 0:
                 if y+n < size[1]:
-                    if pixels[x-m,y+n] != colorval:  data[x-m][y+n] = borderval
+                    if pixels[x-m,y+n] != colorval and data[x-m][y+n]!=wall:  data[x-m][y+n] = borderval
                 if y-n > 0:
-                    if pixels[x-m,y-n] != colorval:  data[x-m][y-n] = borderval
-
-border = 6
-borderColour = (0,0,100)
-wall = 5
-wallColour = (0,0,0)
+                    if pixels[x-m,y-n] != colorval and data[x-m][y-n]!=wall:  data[x-m][y-n] = borderval
 
 def addPerimeter(data, borderval, border):
     for x in range(len(data)):
@@ -61,7 +61,7 @@ def addPerimeter(data, borderval, border):
                 data[-x-1][y] = borderval
 
 
-def mapData(size, pixels, leeway=10,perimeter=10):
+def mapData(size, pixels, leeway=9,perimeter=10):
     data = [[0 for y in range(size[1])] for x in range(size[0])] #Walkable
     #For a path
     for x in range(size[0]):

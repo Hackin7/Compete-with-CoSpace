@@ -32,16 +32,26 @@ def addCoordinates(coordinates, pixels, colour):
     except:pass
 
 def run(mapname="map.txt",size=361,pathname="path.txt"):
+    print(mapname,pathname)
     layout=[]
-    while True:
-        with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+mapname) as m:
-            while True:
-                data = m.readline()
-                #print(data)
-                if data=="":break
-                data = [int(i) for i in data.split()]
-                layout = [data]+layout
-        if len(layout) == size or size==0: break
+    with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+mapname) as m:
+        for j in range(360):
+            data = m.readline()
+            #print(data)
+            if data=="":break
+            data = [int(i) for i in data.split()]
+            layout = [data]+layout
+
+    with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+"zone.txt") as m:
+        for j in range(360):
+            data = m.readline()
+            #print(data)
+            if data=="":break
+            zoning = data.split()
+            for i in range(len(zoning)):
+                if int(zoning[i]) > 0:
+                    layout[-j][i] = 5
+
     print(f"Getting Map {len(layout)}")
     lines = []        
     with open("C:/Users/zunmu/Microsoft Robotics Dev Studio 4/"+pathname) as p:
@@ -59,7 +69,8 @@ def r():
     while True:
         try:run()
         except KeyboardInterrupt:pass 
-        except:r()
+        except Exception as e:
+            print(e)
         input("Get Map again")
 import os
 from PreprocessedMap import data

@@ -205,10 +205,10 @@ int colorSensorX = PositionX1, colorSensorY = PositionY1;
 void rotateToSuper(int x, int y){
     //if(reached(x,y,10,10)){WheelLeft=0;WheelRight=0;}
     //else{
-	rotateRobot(angle(x,y, PositionX1,PositionY1));
-	//st.trigo(x, y, PositionX1, PositionY1);
+	//rotateRobot(angle(x,y, PositionX1,PositionY1));
+	st.trigo(x, y, PositionX1, PositionY1);
 }
 void rotateToFAST(int x, int y){
-	rotateRobot(angle(x, y, PositionX1, PositionY1));
-    //st.trigo(x, y, PositionX1, PositionY1);
+	//rotateRobot(angle(x, y, PositionX1, PositionY1));
+    st.trigo(x, y, PositionX1, PositionY1);
 }

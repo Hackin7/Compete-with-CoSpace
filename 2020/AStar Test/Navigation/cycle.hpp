@@ -1,3 +1,18 @@
+Map location(layout);
+AStar mapping(&location);
+///Move to coordinates////////////////////////////////////////////
+class CheckReached:public FindNode{
+    private: int x1, y1;
+public:
+     CheckReached(int x, int y) {x1 = x; y1 = y;};
+     virtual bool operator() (int x, int y){return (x == x1 && y == y1);};
+};
+void moveAStar(int x, int y){
+    if(reached(x,y,10,10)){WheelLeft=0;WheelRight=0;return;}
+	FindNode* go = new CheckReached(x,y);
+	mapping.getPath(PositionX,PositionY,go);
+	moveTo(&location,mapping.path,10);
+}
 ///Move to zones////////////////////////////////////////////////
 class Zoning{
 private:
@@ -40,38 +55,38 @@ public:
         if (currlocation->getPixel(PositionX1,PositionY1) != val ){
             FindNode* go = new FindZone(currlocation,zn,val);
             mapping->path=mapping->getPath(PositionX1,PositionY1,go);
-            moveTo(currlocation,mapping->path,10);
+            moveTo(currlocation,mapping->path,1);
             if (!onetime.toRun()){onetime.reset();nodeTime.reset();}
         }//Random Points
         else{
             //WheelLeft=0;WheelRight=0;
             /*
             cout<<"ZoneSearch";
-            if (reached(point.pos[0],point.pos[1],5,5) ||
-                location.getPixel(point.pos[0],point.pos[1])!=val ||
+            if (reached(point.pos[0],point.pos[1],10,10) ||
+                currlocation->getPixel(point.pos[0],point.pos[1])!=val ||
                 (point.pos[0]==0&&point.pos[1]==0)
                 ){
-                coordinates newpoint = z.randomNode(z.getZoneNo(PositionX1,PositionY1));
+                coordinates newpoint = zn->randomNode(zn->getZoneNo(PositionX1,PositionY1));
                 point.pos[0] = newpoint.pos[0];
                 point.pos[1] = newpoint.pos[1];
                 cout<<"Change Coordinates: ";showCoordinates(newpoint);
+                WheelLeft=3;WheelRight=3; Duration=1;return;
             }
             moveAStar(point.pos[0],point.pos[1]);
             */
-            int choice = random(3);//7);
+            int choice = random(1);//7);
             cout<<"Choice:" <<choice<<endl;
             switch(choice){
                 case 0:WheelLeft=3;WheelRight=3;break;
                 case 1:WheelLeft=3;WheelRight=4;break;
                 case 2:WheelLeft=4;WheelRight=3;break;
-                /*
                 case 3:WheelLeft=2;WheelRight=4;break;
                 case 4:WheelLeft=4;WheelRight=2;break;
                 case 5:WheelLeft=-3;WheelRight=3;break;
-                case 6:WheelLeft=3;WheelRight=-3;break;*/
+                case 6:WheelLeft=3;WheelRight=-3;break;
                 //default:WheelLeft=3;WheelRight=3;break;
             }
-            Duration=2;
+            //Duration=2;
             //WheelLeft=4;WheelRight=3;
         }
     }
