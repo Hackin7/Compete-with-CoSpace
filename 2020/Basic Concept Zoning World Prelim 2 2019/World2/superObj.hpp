@@ -53,9 +53,6 @@ void getAwayPoint(){
 }
 
 bool superObjAStar(){
-    FindNode* go = new CheckReached(SuperObjX,SuperObjY);
-    mapping.getPath(colorSensorX,colorSensorY,go);
-
     if (SuperCloseTimer.timeout(SuperCloseTimeOut+5)){SuperCloseTimer.reset();cout<<"SuperCloseReset";}
 	//if (w2Obj.isCollectedSuper()){cycle.changeZone();}
     if (SuperObj_Num>0 && w2Obj.noSuperObj != SuperObj_Num){
@@ -81,6 +78,8 @@ bool superObjAStar(){
 	else if (w2Obj.noSuperObj>0 && reached(SuperObjX,SuperObjY,20,20) &&
 			(!SuperObjTimer.timeout(SuperTimeOut))){
 		cout<<"SUPER+++!!!"<<endl;
+		FindNode* go = new CheckReached(SuperObjX,SuperObjY);
+        mapping.getPath(colorSensorX,colorSensorY,go);
 		coordinates node = nodeSelect(&location,mapping.path,10);
 		rotateToSuper(node.pos[0], node.pos[1]);
         return true;
@@ -89,6 +88,8 @@ bool superObjAStar(){
             ( !SuperObjTimer.timeout(SuperTimeOut))
             ){
 		cout<<"SUPER!!!"<<endl;
+		FindNode* go = new CheckReached(SuperObjX,SuperObjY);
+        mapping.getPath(colorSensorX,colorSensorY,go);
 		coordinates node = nodeSelect(&location,mapping.path,1);
 		rotateToSuper(node.pos[0], node.pos[1]);
 		SuperCloseTimer.reset();

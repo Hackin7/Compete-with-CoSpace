@@ -56,14 +56,13 @@ class FindZone:public FindNode{
         };
 };
 
-const int numberOfZones = 6;
+const int numberOfZones = 5;
 int zoneCycle[numberOfZones][2] =  {
-    {4, 0},
-    {11, 1},
-    {7, 0},
-    {1, 2},
-    {8, 1},
-    {2, 2},
+    {10, 3},
+    {13, 2},
+    {11, 0},
+    {4, 1},
+    {1, 1}
 };
 int zoneNo = 0;
 Timer Timing;
@@ -114,18 +113,6 @@ bool cycle(AStar *mapping, Map *location, bool blue, bool red, bool black){
     return false;
 }
 ///////////////////////////////////////////////////////////////////////
-
-void addTempBarrier(int us, double uscomp){
-    if (us<15){
-        int boundary=8;
-        int x = PositionX1 + (us+5)*cos(uscomp); //Offset
-        int y = PositionY1 + (us+5)*sin(uscomp);
-        location.addTempZone(x-boundary,y-boundary,x+boundary,y+boundary);
-    }
-}
-
-////////////////////////////////////////////////////////////////////////
-
 ofstream outfile;
 ofstream mapFile;
 ofstream pathFile;
@@ -182,27 +169,6 @@ static void Game1(){
 
     /////////////////////////////////////////////////////////////////////////
 
-    /*
-    //Temporary Barrier
-    if (Time%60*8==0){
-            //cout<<"TTTTTTTTTT";
-            double pi=3.1415926535;double usfcomp=0;double usrcomp=0;double uslcomp=0;
-            int usfcomptemp=((Compass+90)%360);
-            usfcomp=usfcomptemp;
-            uslcomp=(usfcomptemp-40)%360;
-            usrcomp=(usfcomptemp+40)%360;
-          // convert to rad
-            usfcomp=usfcomp*pi/180;
-            usrcomp=usrcomp*pi/180;
-            uslcomp=uslcomp*pi/180;
-            addTempBarrier(US_Front, usfcomp);
-            addTempBarrier(US_Right, usrcomp);
-            addTempBarrier(US_Left, uslcomp);
-    }
-    if (Time%7==0){
-        for(int i=0;i<10;i++){location.removeTempZone();}
-    }*/
-
     bool collectBlue = w2Obj.LoadedObjects<6 && (w2Obj.LoadedBlue + w2Obj.LoadedSuperObj + w2Obj.noSuperObj)<2;//true;
 	bool collectRed = w2Obj.LoadedObjects<6 && w2Obj.LoadedRed<2;//true;
 	bool collectBlack = w2Obj.LoadedObjects<6 && w2Obj.LoadedBlack<2;//true;
@@ -217,12 +183,6 @@ static void Game1(){
 	else if ( US_Front < 9){
         WheelLeft=-2;WheelRight=-2;//Duration=2;
     }
-    else if(US_Left < 9){
-        WheelRight = -2;
-    }
-    else if(US_Right < 9){
-        WheelLeft = -2;
-    }    //else if (wallAvoiding(5)){}
     else if (superObjAStar()){return;}
     else if (w2Obj.LoadedObjects >=6 || (Time > 420 && (w2Obj.LoadedObjects >=3 ||w2Obj.LoadedSuperObj>0))){
         //printf("D");
