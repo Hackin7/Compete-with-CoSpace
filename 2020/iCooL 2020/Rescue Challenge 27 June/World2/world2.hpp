@@ -56,14 +56,20 @@ class FindZone:public FindNode{
         };
 };
 
-const int numberOfZones = 6;
+int slowzone[3] = {153,161,207};
+
+const int numberOfZones = 10;
 int zoneCycle[numberOfZones][3] =  {
-    {13, 3, 11},
-    {12, 2, 13},
-    {6, 3, 20},
-    {1, 2, 5},
-    {3, 1, 10},
-    {10, 0, 8}
+    {17, 1, 8},
+    {25, 2, 3},
+    {23, 1, 3},
+    {18, 2, 13},
+    {15, 2, 10},
+    {10, 1, 10},
+    {7, 0, 10},
+    {1, 2, 3},
+    {3, 1, 15},
+    {13, 0, 10}
 };
 int zoneNo = 0;
 Timer Timing;
@@ -124,6 +130,10 @@ void boxOut(int box, int x, int y){
             pathFile<<j<<" "<<k<<"\n";//count++;
     }}
 }
+void wheelConvert(int val){
+    WheelLeft *= val;
+    WheelRight *= val;
+}
 int TimeCount = 0;
 int CompassCount = 0;
 static void Game1(){
@@ -133,7 +143,11 @@ static void Game1(){
     //Compass %= 360;
     //Compass = ((WheelRight-WheelLeft)*180/42)%360;
     PositionX1 = PositionX;PositionY1 = PositionY;
-    //posInfoLost();
+
+    WheelLeft /= 15;WheelRight /= 15;
+        posInfoLost();
+    wheelConvert(15);
+
     colorSensorX = PositionX1+(int)round(cos((Compass+90.0)*PI/180)*5);
 	colorSensorY = PositionY1+(int)round(sin((Compass+90.0)*PI/180)*5);
 	if (PositionX1 == 0 || PositionY1 == 0){PositionX1=tx;PositionY1=ty;}
@@ -178,37 +192,39 @@ static void Game1(){
 
     /////////////////////////////////////////////////////////////////////////
 
-    bool collectBlue = w2Obj.LoadedObjects<6 && (w2Obj.LoadedBlue + w2Obj.LoadedSuperObj + w2Obj.noSuperObj)<2;//true;
-	bool collectRed = w2Obj.LoadedObjects<6 && w2Obj.LoadedRed<2;//true;
+    bool collectBlue = w2Obj.LoadedObjects<6 && (w2Obj.LoadedBlue)<2;//true;
+	bool collectRed = w2Obj.LoadedObjects<6 && (w2Obj.LoadedRed + w2Obj.LoadedSuperObj + w2Obj.noSuperObj )<2;//true;
 	bool collectBlack = w2Obj.LoadedObjects<6 && w2Obj.LoadedBlack<2;//true;
 	bool deposit = w2Obj.LoadedObjects>=1 ||  w2Obj.LoadedSuperObj > 0;//true;
 	bool avoid = w2Obj.LoadedObjects>=2|| w2Obj.LoadedSuperObj > 0;//true;
 
 	if (w2Obj.objCollectDeposit(collectBlue, collectRed, collectBlack, deposit)){
-            WheelLeft *= 15;
-        WheelRight *= 15;
+        wheelConvert(15);
         return;
     } // If ran, let it do its thing
 	if (boundary(12)){
-        WheelLeft *= 15;
-        WheelRight *= 15;
+        wheelConvert(15);
         return;
 	}
 	else if (w2Obj.Trap(w2Obj.LoadedObjects > 0)){}
 	//else if (colorCheck(w2Obj.slowarea,20) && Time>60){WheelLeft=-3;WheelRight=-4;Duration=2;}
     //else if ( US_Front < 15){WheelLeft=-2;WheelRight=-3;Duration=5;} //iMPROVE wORLD 2 Wall Avoiding
-    else if (PositionX==0 && PositionY==0){WheelLeft=3;WheelRight=3;}
-	else if ( US_Front < 15){
-        WheelLeft=-2;WheelRight=-3;//Duration=2;
+    //else if (PositionX==0 && PositionY==0){WheelLeft=3;WheelRight=3;}
+	else if ( US_Front < 12){
+        WheelLeft=-2;WheelRight=-4;//Duration=2;
     }
     else if (superObjAStar()){}
-    else if (w2Obj.LoadedObjects >=6 || (Time > 330 && (w2Obj.LoadedObjects >=3 ||w2Obj.LoadedSuperObj>0))){
+    else if (w2Obj.LoadedObjects >=6 || (Time > 350 && (w2Obj.LoadedObjects >=3 ||w2Obj.LoadedSuperObj>0))){
         printf("D");
         moveDeposit(&mapping, &location);
     }
     else{
         cycle(&mapping, &location, collectBlue, collectRed, collectBlack);//moveAStar(&mapping, &location, 174,190);
     }
-    WheelLeft *= 15;
-    WheelRight *= 15;
+    if (colorCheck(slowzone, 10)){
+        wheelConvert(25);
+    }else{
+        wheelConvert(15);
+    }
+
 }
